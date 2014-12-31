@@ -1,0 +1,7 @@
+{
+  "name": "aip-interactions-viewer",
+  "private": true,
+  "dependencies": {
+    "cytoscape": "cytoscape/cytoscape.js#~2.2.13"
+  }
+}
