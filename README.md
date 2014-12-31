@@ -1,4 +1,4 @@
-AIP_interactions_viewer
-=======================
+# AIP interactions viewer
 
-BAR's Interactions Viewer for AIP
+This is the interaction viewer from BAR developed for the AIP project.
+
