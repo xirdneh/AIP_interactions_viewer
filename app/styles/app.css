@@ -5,3 +5,12 @@
 #inputs {
 	width: 40px;
 }
+
+#cyto {
+	height: 550px;
+	width: 600px;
+}
+
+body {
+	font: 10px;
+}
