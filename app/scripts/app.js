@@ -68,6 +68,18 @@
 				}); // End .cytoscape()
 			}; //  End loadCy()
 
+			// This function will validate loci
+			var isLociValid = function(loci) {
+				var result = true;
+				var patt = /^AT(\d|C|M)G\d{5,5}$/i;
+				for (var i = 0; i < loci.length; i++) {
+					if (!patt.test(loci[i])) {
+						result = false;
+					}		
+				}
+				return result;
+			};
+
 			// Reset button
 			$('#interactions-form', appContext).on('reset', function() {
 				document.forms['interactions-form'].loci.value = '';
@@ -78,12 +90,35 @@
 			$('#interactions-form', appContext).on('submit', function(e) {
 				e.preventDefault();
 				
-				var loci = $('#loci').val().split('\n');	// Get the data from textarea and convert it to array
-
-				nodes = [];	// Nodes of cytoscape graph
-				edges = [];	// Edges of cytoscape graph
+				// Declare variables
+				var loci = $('#loci', appContext).val().split('\n');	// Get the data from textarea and convert it to array
 				var query = {};	// Query data for the BAR interactions webservice
 				var elements = {};	// The final cytoscape data with nodes and edges
+				var pubData, inputLociOnly;
+
+				// Initialize variables
+				nodes = [];	// Nodes of cytoscape graph
+				edges = [];	// Edges of cytoscape graph
+
+				// See if the user wants published data or not
+				if ($('#pub', appContext).prop('checked')) {
+					pubData = true;
+				} else {
+					pubData = false;
+				}
+
+				// See if only user supplied AGI should be included
+				if ($('#input-loci-only', appContext).prop('checked')) {
+					inputLociOnly = true;
+				} else {
+					inputLociOnly = false;
+				}
+
+				// Validate data
+				if (!isLociValid(loci)) {
+					window.alert('Invalid locus ID.');
+					return;
+				}
 
 				// This function only makes element object just as a workaround for javascript async issues!
 				function makeCy() {
@@ -92,10 +127,10 @@
 				}
 
 				// Add query to nodes
-				function addData(i) {
+				function addData(i, callback) {
 					query = {
 						locus: loci[i],
-						published: 'false'
+						published: pubData
 					};
 
 					Agave.api.adama.search({
@@ -118,16 +153,16 @@
 							}});
 						}
 
-						// Now this is the interacting part! Not sure how to handle async callback, but this seems to work so far!
+						// When this is done, call the callback function. I don't know how to do this without creathing 'callback hell'
 						if (i === loci.length - 1) {
-							setTimeout(makeCy, 1000);
+							callback();
 						}
 					});
 				}
 
 				// Add data for each user supplied Locus
 				for (var i = 0; i < loci.length; i++) {
-					addData(i);
+					addData(i, makeCy);
 				}
 			});					
 
