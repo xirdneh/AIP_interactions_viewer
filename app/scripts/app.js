@@ -78,50 +78,63 @@
 			$('#interactions-form', appContext).on('submit', function(e) {
 				e.preventDefault();
 				
-				//var loci = $('#loci').val();
+				var loci = $('#loci').val().split('\n');	// Get the data from textarea and convert it to array
+
+				nodes = [];	// Nodes of cytoscape graph
+				edges = [];	// Edges of cytoscape graph
+				var query = {};	// Query data for the BAR interactions webservice
+				var elements = {};	// The final cytoscape data with nodes and edges
+
+				// This function only makes element object just as a workaround for javascript async issues!
+				function makeCy() {
+					elements = {nodes: nodes, edges: edges};
+					loadCy(elements);
+				}
 
 				// Add query to nodes
-				
-				var query = {
-					locus: 'AT1G01010',
-					published: 'false'
-				};
+				function addData(i) {
+					query = {
+						locus: loci[i],
+						published: 'false'
+					};
 
-				Agave.api.adama.search({
-					'namespace': 'asher', 'service': 'interactions_v0.1', 'queryParams': query
-				}, function(response) {
-					nodes = [];
-					edges = [];
-					nodes.push({data: {
-						id: 'AT1G01010',
-						name: 'AT1G01010'
-					}});
-
-					for (var i = 0; i < response.obj.result.length; i++) {
+					Agave.api.adama.search({
+						'namespace': 'asher', 'service': 'interactions_v0.1', 'queryParams': query
+					}, function(response) {
 						nodes.push({data: {
-							id: response.obj.result[i].locus,
-							name: response.obj.result[i].locus
+							id: loci[i],
+							name: loci[i]
 						}});
-					
-						edges.push({data: {
-							source: 'AT1G01010', 
-							target: response.obj.result[i].locus
-						}});
-					}
-		
-					var elements = {nodes: nodes, edges: edges}; 
-					loadCy(elements);
-				});
 
+						for (var j = 0; j < response.obj.result.length; j++) {
+							nodes.push({data: {
+								id: response.obj.result[j].locus,
+								name: response.obj.result[j].locus
+							}});
+						
+							edges.push({data: {
+								source: loci[i], 
+								target: response.obj.result[j].locus
+							}});
+						}
+
+						// Now this is the interacting part! Not sure how to handle async callback, but this seems to work so far!
+						if (i === loci.length - 1) {
+							setTimeout(makeCy, 1000);
+						}
+					});
+				}
+
+				// Add data for each user supplied Locus
+				for (var i = 0; i < loci.length; i++) {
+					addData(i);
+				}
 			});					
 
 			// About button
 			$('#about').click(function() {
 				window.alert('This app was developed by the BAR team with help from the AIP team. The data is obtained from BAR databases using webservices.');
 			});
-
-
-
 		});
 	});
 })(window, jQuery, cytoscape);
