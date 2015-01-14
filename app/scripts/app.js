@@ -31,20 +31,20 @@
 			}
 
 			// If we don't have cytoscape, add it
-			//if (!hasCytoscape) {
-			//	el = document.createElement('script');
-			//	el.src = cytoscapeJsUrl;
-			//	el.type = 'text/javascript';
-			//	document.body.appendChild(el);
-			//}
+			if (!hasCytoscape) {
+				el = document.createElement('script');
+				el.src = cytoscapeJsUrl;
+				el.type = 'text/javascript';
+				document.body.appendChild(el);
+			}
 
 			// If we don't have Arbor, add it
-			//if (!hasArbor) {
-			//	el = document.createElement( 'script' );
-			//	el.src = arborJsUrl;
-			//	el.type = 'text/javascript';
-			//	document.body.appendChild( el );
-			//}
+			if (!hasArbor) {
+				el = document.createElement( 'script' );
+				el.src = arborJsUrl;
+				el.type = 'text/javascript';
+				document.body.appendChild( el );
+			}
 		}
 		init();
 
