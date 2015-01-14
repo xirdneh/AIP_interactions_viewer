@@ -1,0 +1,25 @@
+{
+  "name": "cytoscape",
+  "version": "2.2.14",
+  "main": "dist/cytoscape.js",
+  "ignore": [
+    "documentation",
+    "src",
+    "test",
+    "debug",
+    "gulpfile.js",
+    "*.sh",
+    "package.json",
+    "README.md"
+  ],
+  "homepage": "https://github.com/cytoscape/cytoscape.js",
+  "_release": "2.2.14",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.2.14",
+    "commit": "5d4c595b3285fbc3e25311bd399162866450fa72"
+  },
+  "_source": "git://github.com/cytoscape/cytoscape.js.git",
+  "_target": "~2.2.13",
+  "_originalSource": "cytoscape/cytoscape.js"
+}
