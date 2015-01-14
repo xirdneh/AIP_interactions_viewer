@@ -31,6 +31,12 @@ module.exports = function(grunt) {
           livereload: true
         }
       },
+	  css: {
+	    files: ['<%= config.app %>/styles/{,*/}*.css'],
+		options: {
+		  livereload: true
+		}
+	  },			
       jstest: {
         files: ['test/spec/{,*/}*.js'],
         tasks: ['test:watch']
@@ -41,6 +47,7 @@ module.exports = function(grunt) {
           'lib/*.*',
           '<%= config.app %>/{,*/}*.html',
           '<%= config.app %>/images/{,*/}*',
+		  '<%= config.app %>/styles/{,*/}*.css',
           '.tmp/styles/{,*/}*.css'
         ],
         tasks: ['includes'],

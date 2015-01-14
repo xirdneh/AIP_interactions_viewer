@@ -3,14 +3,18 @@
 }
 
 #inputs {
-	width: 40px;
+	width: 120px;
 }
 
 #cyto {
-	height: 550px;
-	width: 600px;
+	height: 720px;
+	width: 800px;
 }
 
 body {
 	font: 10px;
+}
+
+td {
+	vertical-align: top;
 }
