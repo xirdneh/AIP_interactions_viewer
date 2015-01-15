@@ -16,32 +16,18 @@
 		// Intialize
 		// This is code from old AIP BAR interactions viewer (not sure if the app would work without it!)
 		function init() {
-			cytoscapeJsUrl = 'bower_components/cytoscape/dist/cytoscape.min.js';	// The cytoscape.js 
-			arborJsUrl = 'bower_components/cytoscape/lib/arbor.js';	// The layout file
-
-			hasCytoscape = hasArbor = false;
-			reCytoscape = new RegExp(cytoscapeJsUrl);
-			reArbor = new RegExp(arborJsUrl);
-			allScripts = document.querySelectorAll('script');
-
-			// This is checking if cytoscape is present
-			for (i = 0; i < allScripts.length && !(hasCytoscape); i++) {
-				hasCytoscape = hasCytoscape || reCytoscape.test(allScripts[i].src);
-				hasArbor = hasArbor || reCytoscape.test( allScripts[i].src );
+			var allScripts, i, arborURL, re;
+			allScripts = document.querySelectorAll( 'script' );
+			re = /^(.*)(\/cytoscape[^\/]*)\/(.*)cytoscape\.js??(.*)?$/;
+			for ( i = 0; i < allScripts.length && ! arborURL; i++ ) {
+				if ( re.test( allScripts[i].src ) ) {
+					var match = re.exec( allScripts[i].src );
+					arborURL = match[1] + match[2] + '/lib/arbor.js';
+				}
 			}
-
-			// If we don't have cytoscape, add it
-			if (!hasCytoscape) {
-				el = document.createElement('script');
-				el.src = cytoscapeJsUrl;
-				el.type = 'text/javascript';
-				document.body.appendChild(el);
-			}
-
-			// If we don't have Arbor, add it
-			if (!hasArbor) {
-				el = document.createElement( 'script' );
-				el.src = arborJsUrl;
+			if ( arborURL ) {
+				var el = document.createElement( 'script' );
+				el.src = arborURL;
 				el.type = 'text/javascript';
 				document.body.appendChild( el );
 			}
@@ -51,7 +37,7 @@
 		$(document).ready(function() {
 			// This function loads cytoscape. 'elements' stores the newtwork
 			function loadCy(elements) {
-				// Unhide the legend for BAR AIV. 
+				// Unhide the legend for BAR AIV.
 				$('#legend').removeClass('hidden');
 				$('#cyto').removeClass('hidden').cytoscape({
 					layout: {
@@ -64,7 +50,7 @@
 						padding: [ 50, 50, 50, 50 ]
 					},
 					style: [
-						{ 
+						{
 							selector: 'node',
 								css: {
 									'content': 'data(name)',
@@ -80,7 +66,7 @@
 									'line-color': 'data(lineColor)'
 								}
 						}
-					],					
+					],
 					elements: elements
 				}); // End .cytoscape()
 			} //  End loadCy()
@@ -107,7 +93,7 @@
 			// Submit button
 			$('#interactions-form', appContext).on('submit', function(e) {
 				e.preventDefault();
-				
+
 				// Declare variables
 				var loci = $('#loci', appContext).val().toUpperCase().split('\n');	// Get the data from textarea and convert it to an array
 				var query = {};	// Query data for the BAR interactions webservice
@@ -134,7 +120,7 @@
 
 				// Validate Loci and return the validated list
 				loci = validateLoci(loci);
-				
+
 				// Currently only support upto 20 AGI
 				if (loci.length > 20) {
 					window.alert('This app currently supports up to 20 AGIs.');
@@ -213,7 +199,7 @@
 							} else {
 								color = '#A2A3AB';
 							}
-							
+
 							// Build interactor nodes
 							nodes.push({data: {
 								id: response.obj.result[j].locus,
@@ -221,10 +207,10 @@
 								nWidth: 25,
 								nHeight: 25
 							}});
-						
+
 							// Build edges
 							edges.push({data: {
-								source: loci[i], 
+								source: loci[i],
 								target: response.obj.result[j].locus,
 								lineWidth: width,
 								lineStyle: style,
@@ -245,7 +231,7 @@
 				for (var i = 0; i < loci.length; i++) {
 					addData(i, makeCy);
 				}
-			});					
+			});
 
 			// About button
 			$('#about').click(function() {
