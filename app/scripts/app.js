@@ -5,18 +5,17 @@
 	var appContext = $('[data-app-name="aip-interactions-viewer"]');
 
 	// Variables for graph
-	var nodes = [], edges = [];
+	var nodes = [], edges = [], loci = [];
 
 	window.addEventListener('Agave::ready', function() {
 		var Agave = window.Agave;
-
-		// Variable
-		var el, i, cytoscapeJsUrl, arborJsUrl, reCytoscape, reArbor, hasCytoscape, hasArbor, allScripts;
 
 		// Intialize
 		// This is code from old AIP BAR interactions viewer (not sure if the app would work without it!)
 		function init() {
 			var allScripts, i, arborURL, re;
+
+			// Load the dependances: The new way. Thanks for AIP staff for this
 			allScripts = document.querySelectorAll( 'script' );
 			re = /^(.*)(\/cytoscape[^\/]*)\/(.*)cytoscape\.js??(.*)?$/;
 			for ( i = 0; i < allScripts.length && ! arborURL; i++ ) {
@@ -37,9 +36,12 @@
 		$(document).ready(function() {
 			// This function loads cytoscape. 'elements' stores the newtwork
 			function loadCy(elements) {
-				// Unhide the legend for BAR AIV.
-				$('#legend').removeClass('hidden');
-				$('#cyto').removeClass('hidden').cytoscape({
+				// Unhide the legend and link for BAR AIV
+				$('#legend', appContext).removeClass('hidden');
+				$('#aiv', appContext).removeClass('hidden');
+
+				// Now load the network
+				$('#cyto', appContext).removeClass('hidden').cytoscape({
 					layout: {
 						name: 'arbor',
 						animate: false,
@@ -72,12 +74,12 @@
 			} //  End loadCy()
 
 			// Remove white spaces and validate the loci. Return the list of useable loci
-			function validateLoci(loci) {
+			function validateLoci(inputLoci) {
 				var finalLoci = [];
 				var patt = /^AT(\d|C|M)G\d{5,5}$/i;
-				for (var i = 0; i < loci.length; i++) {
-					if (patt.test(loci[i])) {
-						finalLoci.push(loci[i]);
+				for (var i = 0; i < inputLoci.length; i++) {
+					if (patt.test(inputLoci[i])) {
+						finalLoci.push(inputLoci[i]);
 					}
 				}
 				return finalLoci;
@@ -88,21 +90,54 @@
 				document.forms['interactions-form'].loci.value = '';
 				$('#cyto', appContext).addClass('hidden');
 				$('#legend', appContext).addClass('hidden');
+				$('#aiv', appContext).addClass('hidden');
+
+				// Reset the loci
+				loci = [];
+			});
+
+			// AIV link
+			$('#aiv', appContext).on('click', function() {
+				var url = 'http://bar.utoronto.ca/interactions/cgi-bin/arabidopsis_interactions_viewer.cgi?qbar=yes&input=';	// BAR AIP URL to open
+				
+				// Now add all the valid loci. The AIV use textarea which is the input parameter. qbar is to query from BAR.
+				for (var i = 0; i < loci.length; i++) {
+					if (i === loci.length - 1) {
+						url = url + loci[i];
+					} else {
+						url = url + loci[i] + '%0D%0A';
+					}
+				}
+				
+				// Published data set only
+				if ($('#pub', appContext).prop('checked')) {
+					url = url + '&pdataonly=yes';
+				}
+
+				// Only include input loci in the network
+				if ($('#input-loci-only', appContext).prop('checked')) {
+					url = url + '&filter=yes';
+				}					
+				
+				// Open the link in a new window
+				window.open(url, '_blank');	 
 			});
 
 			// Submit button
 			$('#interactions-form', appContext).on('submit', function(e) {
 				e.preventDefault();
 
-				// Declare variables
-				var loci = $('#loci', appContext).val().toUpperCase().split('\n');	// Get the data from textarea and convert it to an array
-				var query = {};	// Query data for the BAR interactions webservice
-				var elements = {};	// The final cytoscape data with nodes and edges
-				var pubData, inputLociOnly, width, color, style;
-
+				
 				// Initialize variables
 				nodes = [];	// Nodes of cytoscape graph
 				edges = [];	// Edges of cytoscape graph
+				//loci = [];	// loci
+
+				// Declare variables
+				loci = $('#loci', appContext).val().toUpperCase().split('\n');	// Get the data from textarea and convert it to an array
+				var query = {};	// Query data for the BAR interactions webservice
+				var elements = {};	// The final cytoscape data with nodes and edges
+				var pubData, inputLociOnly, width, color, style;
 
 				// See if the user wants published data or not
 				if ($('#pub', appContext).prop('checked')) {
