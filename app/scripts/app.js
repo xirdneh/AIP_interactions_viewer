@@ -78,6 +78,7 @@
 				var finalLoci = [];
 				var patt = /^AT(\d|C|M)G\d{5,5}$/i;
 				for (var i = 0; i < inputLoci.length; i++) {
+					inputLoci[i] = inputLoci[i].trim();
 					if (patt.test(inputLoci[i])) {
 						finalLoci.push(inputLoci[i]);
 					}
