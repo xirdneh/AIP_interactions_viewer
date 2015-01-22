@@ -1,4 +1,4 @@
-.headings {
+#aip-interactions-viewer-main-tbl .headings {
 	font-weight: bold;
 }
 
@@ -11,10 +11,10 @@
 	width: 800px;
 }
 
-body {
+#aip-interactions-viewer-main-tbl {
 	font: 10px;
 }
 
-td {
+#aip-interactions-viewer-main-tbl td {
 	vertical-align: top;
 }
