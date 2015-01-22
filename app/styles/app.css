@@ -2,11 +2,11 @@
 	font-weight: bold;
 }
 
-#inputs {
+#aip-interactions-viewer-inputs {
 	width: 120px;
 }
 
-#cyto {
+#aip-interactions-viewer-cyto {
 	height: 720px;
 	width: 800px;
 }

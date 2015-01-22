@@ -37,11 +37,11 @@
 			// This function loads cytoscape. 'elements' stores the newtwork
 			function loadCy(elements) {
 				// Unhide the legend and link for BAR AIV
-				$('#legend', appContext).removeClass('hidden');
-				$('#aiv', appContext).removeClass('hidden');
+				$('#aip-interactions-viewer-legend', appContext).removeClass('hidden');
+				$('#aip-interactions-viewer-aiv', appContext).removeClass('hidden');
 
 				// Now load the network
-				$('#cyto', appContext).removeClass('hidden').cytoscape({
+				$('#aip-interactions-viewer-cyto', appContext).removeClass('hidden').cytoscape({
 					layout: {
 						name: 'arbor',
 						animate: false,
@@ -87,20 +87,20 @@
 			}
 
 			// Reset button
-			$('#interactions-form', appContext).on('reset', function() {
+			$('#aip-interactions-viewer-interactions-form', appContext).on('reset', function() {
 				document.forms['interactions-form'].loci.value = '';
-				$('#cyto', appContext).addClass('hidden');
-				$('#legend', appContext).addClass('hidden');
-				$('#aiv', appContext).addClass('hidden');
+				$('#aip-interactions-viewer-cyto', appContext).addClass('hidden');
+				$('#aip-interactions-viewer-legend', appContext).addClass('hidden');
+				$('#aip-interactions-viewer-aiv', appContext).addClass('hidden');
 
 				// Reset the loci
 				loci = [];
 			});
 
 			// AIV link
-			$('#aiv', appContext).on('click', function() {
+			$('#aip-interactions-viewer-aiv', appContext).on('click', function() {
 				var url = 'http://bar.utoronto.ca/interactions/cgi-bin/arabidopsis_interactions_viewer.cgi?qbar=yes&input=';	// BAR AIP URL to open
-				
+
 				// Now add all the valid loci. The AIV use textarea which is the input parameter. qbar is to query from BAR.
 				for (var i = 0; i < loci.length; i++) {
 					if (i === loci.length - 1) {
@@ -109,46 +109,46 @@
 						url = url + loci[i] + '%0D%0A';
 					}
 				}
-				
+
 				// Published data set only
-				if ($('#pub', appContext).prop('checked')) {
+				if ($('#aip-interactions-viewer-pub', appContext).prop('checked')) {
 					url = url + '&pdataonly=yes';
 				}
 
 				// Only include input loci in the network
-				if ($('#input-loci-only', appContext).prop('checked')) {
+				if ($('#aip-interactions-viewer-input-loci-only', appContext).prop('checked')) {
 					url = url + '&filter=yes';
-				}					
-				
+				}
+
 				// Open the link in a new window
-				window.open(url, '_blank');	 
+				window.open(url, '_blank');
 			});
 
 			// Submit button
-			$('#interactions-form', appContext).on('submit', function(e) {
+			$('#aip-interactions-viewer-interactions-form', appContext).on('submit', function(e) {
 				e.preventDefault();
 
-				
+
 				// Initialize variables
 				nodes = [];	// Nodes of cytoscape graph
 				edges = [];	// Edges of cytoscape graph
 				//loci = [];	// loci
 
 				// Declare variables
-				loci = $('#loci', appContext).val().toUpperCase().split('\n');	// Get the data from textarea and convert it to an array
+				loci = $('#aip-interactions-viewer-loci', appContext).val().toUpperCase().split('\n');	// Get the data from textarea and convert it to an array
 				var query = {};	// Query data for the BAR interactions webservice
 				var elements = {};	// The final cytoscape data with nodes and edges
 				var pubData, inputLociOnly, width, color, style;
 
 				// See if the user wants published data or not
-				if ($('#pub', appContext).prop('checked')) {
+				if ($('#aip-interactions-viewer-pub', appContext).prop('checked')) {
 					pubData = true;
 				} else {
 					pubData = false;
 				}
 
 				// See if only user supplied AGI should be included
-				if ($('#input-loci-only', appContext).prop('checked')) {
+				if ($('#aip-interactions-viewer-input-loci-only', appContext).prop('checked')) {
 					inputLociOnly = true;
 				} else {
 					inputLociOnly = false;
@@ -270,7 +270,7 @@
 			});
 
 			// About button
-			$('#about').click(function() {
+			$('#aip-interactions-viewer-about').click(function() {
 				window.alert('This app was developed by the BAR team with help from the AIP team. The data is obtained from BAR databases using webservices.');
 			});
 		});
