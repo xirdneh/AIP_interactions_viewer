@@ -4,39 +4,39 @@
 		Welcome to AIP Interactions Viewer from the BAR
 	</h1>
 
-	<table id="main-tbl">
+	<table id="aip-interactions-viewer-main-tbl">
 		<tr>
-			<td id="inputs">
-				<form id="interactions-form">
+			<td id="aip-interactions-viewer-inputs">
+				<form id="aip-interactions-viewer-interactions-form">
 
 					<!-- AGI input -->
 					<span class="headings">Enter Locus IDs (Eg. AT1G01010): </span> <br>
-					<textarea id="loci" rows="20" cols="38"></textarea><br>
-				
+					<textarea id="aip-interactions-viewer-loci" rows="20" cols="38"></textarea><br>
+
 					<!-- Options -->
 					<span class="headings"> Options: </span> <br>
 					<fieldset>
-						<input type="checkbox" id="pub" name="options" value="published"/>
+						<input type="checkbox" id="aip-interactions-viewer-pub" name="options" value="published"/>
 							Show only interactions from published datasets <br>
-						<input type="checkbox" id="input-loci-only" name="options" value="inputOnly"/>
+						<input type="checkbox" id="aip-interactions-viewer-input-loci-only" name="options" value="inputOnly"/>
 							Filter output to include only AGI IDs in input set <br>
 					</fieldset>
-					
+
 					<!-- Legend (so far) -->
-					<div id="legend" class="hidden">
-						<span class="headings">Legend: </span><br> 
+					<div id="aip-interactions-viewer-legend" class="hidden">
+						<span class="headings">Legend: </span><br>
 						<img src="http://bar.utoronto.ca/webservices/aip/interactions/legendnomap.png" alt="Legend">
 					</div>
-					
+
 					<!-- Buttons -->
 					<input type="submit" value="Submit">
 					<input type="reset" value="Reset">
-					<input type="button" id="about" value="About">
-					<input type="button" id="aiv" class="hidden" value="Link to BAR AIV"><br>
+					<input type="button" id="aip-interactions-viewer-about" value="About">
+					<input type="button" id="aip-interactions-viewer-aiv" class="hidden" value="Link to BAR AIV"><br>
 				</form>
 			</td>
-			<td id="cy-canvas">
-				<div class="hidden" id="cyto">
+			<td id="aip-interactions-viewer-cy-canvas">
+				<div class="hidden" id="aip-interactions-viewer-cyto">
 				</div>
 			</td>
 		</tr>

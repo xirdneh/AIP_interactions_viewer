@@ -1,20 +1,20 @@
-.headings {
+#aip-interactions-viewer-main-tbl .headings {
 	font-weight: bold;
 }
 
-#inputs {
+#aip-interactions-viewer-inputs {
 	width: 120px;
 }
 
-#cyto {
+#aip-interactions-viewer-cyto {
 	height: 720px;
 	width: 800px;
 }
 
-body {
+#aip-interactions-viewer-main-tbl {
 	font: 10px;
 }
 
-td {
+#aip-interactions-viewer-main-tbl td {
 	vertical-align: top;
 }
