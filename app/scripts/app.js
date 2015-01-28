@@ -44,12 +44,16 @@
 				$('#aip-interactions-viewer-cyto', appContext).removeClass('hidden').cytoscape({
 					layout: {
 						name: 'arbor',
-						animate: false,
+						liveUpdate: false,
 						fit: true,
 						maxSimulationTime: 200,
-						ungrabifywhileSimulating: false,
+						ungrabifywhileSimulating: true,
 						stepSize: 0.1,
-						padding: [ 50, 50, 50, 50 ]
+						padding: [ 50, 50, 50, 50 ],
+						gravity: true,
+						stableEnergy: function(energy) {
+							return (energy.max <= 0.5) || (energy.mean <= 0.3);
+						}
 					},
 					style: [
 						{
@@ -80,7 +84,10 @@
 				for (var i = 0; i < inputLoci.length; i++) {
 					inputLoci[i] = inputLoci[i].trim();
 					if (patt.test(inputLoci[i])) {
-						finalLoci.push(inputLoci[i]);
+						// Add to list if it is not aleardy there
+						if (finalLoci.indexOf(inputLoci[i]) === -1) {
+							finalLoci.push(inputLoci[i]);
+						}
 					}
 				}
 				return finalLoci;
@@ -88,7 +95,7 @@
 
 			// Reset button
 			$('#aip-interactions-viewer-interactions-form', appContext).on('reset', function() {
-				document.forms['interactions-form'].loci.value = '';
+				$('#aip-interactions-viewer-loci').attr('value','');
 				$('#aip-interactions-viewer-cyto', appContext).addClass('hidden');
 				$('#aip-interactions-viewer-legend', appContext).addClass('hidden');
 				$('#aip-interactions-viewer-aiv', appContext).addClass('hidden');
@@ -132,7 +139,7 @@
 				// Initialize variables
 				nodes = [];	// Nodes of cytoscape graph
 				edges = [];	// Edges of cytoscape graph
-				//loci = [];	// loci
+				loci = [];	// loci
 
 				// Declare variables
 				loci = $('#aip-interactions-viewer-loci', appContext).val().toUpperCase().split('\n');	// Get the data from textarea and convert it to an array
@@ -224,6 +231,8 @@
 							// set color. Published interactions have blue edges. All else have different shades.
 							if (response.obj.result[j].published === 'true') {
 								color = '#6E8FBE';
+								width = 6;
+								style = 'solid';
 							} else if (response.obj.result[j].correlationCoefficient > 0.8) {
 								color = '#AE0A11';
 							} else if (response.obj.result[j].correlationCoefficient > 0.7) {
@@ -271,7 +280,7 @@
 
 			// About button
 			$('#aip-interactions-viewer-about').click(function() {
-				window.alert('This app was developed by the BAR team with help from the AIP team. The data is obtained from BAR databases using webservices.');
+				window.alert('This app was developed by the BAR team with help from the Araport team. The data is obtained from BAR databases using webservices.');
 			});
 		});
 	});
