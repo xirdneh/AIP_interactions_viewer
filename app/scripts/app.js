@@ -42,6 +42,10 @@
 
 				// Now load the network
 				$('#aip-interactions-viewer-cyto', appContext).removeClass('hidden').cytoscape({
+					minZoom: 0.25,
+					maxZoom: 4,
+					wheelSensitivity: 0.25,
+					motionBlur: false,
 					layout: {
 						name: 'arbor',
 						liveUpdate: false,
