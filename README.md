@@ -20,7 +20,7 @@ This is the interactions viewer from the BAR developed for the Araport project. 
 Or Clone the Araport live release (0.1.7): <br />
 ```git clone https://github.com/asherpasha/AIP_interactions_viewer.git``` <br />
 ```cd AIP_interactions_viewer``` <br />
-```git checkout v0.1.6```
+```git checkout v0.1.7```
 3. Prepare: <br />
 ```npm install```  <br />
 ```bower install``` 
