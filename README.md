@@ -17,7 +17,7 @@ This is the interactions viewer from the BAR developed for the Araport project. 
 2. Clone the latest developmental release (may have bugs): <br />
 ```git clone https://github.com/asherpasha/AIP_interactions_viewer.git``` <br /> 
 ```cd AIP_interactions_viewer``` <br />
-Or Clone the Araport live release (0.1.6): <br />
+Or Clone the Araport live release (0.1.7): <br />
 ```git clone https://github.com/asherpasha/AIP_interactions_viewer.git``` <br />
 ```cd AIP_interactions_viewer``` <br />
 ```git checkout v0.1.6```
