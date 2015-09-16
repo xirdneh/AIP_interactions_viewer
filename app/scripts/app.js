@@ -27,6 +27,7 @@
 			if ( arborURL ) {
 				var el = document.createElement( 'script' );
 				el.src = arborURL;
+				el.src = '/sites/all/libraries/science_apps_workspace/bower_components/cytoscape_cytoscape_cytoscape.js_2.3.9/lib/arbor.js';
 				el.type = 'text/javascript';
 				document.body.appendChild( el );
 			}
